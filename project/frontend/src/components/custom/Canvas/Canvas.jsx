@@ -20,16 +20,15 @@ const nodeTypes = {
   DecisionNode: DecisionNode,
 };
 
-let NodeID = 0;
+// let NodeID = 0;
 
 const Canvas = ({ nodes, setNodes, onNodesChange, edges, setEdges, onEdgesChange }) => {
-  console.log("IN Child Node : ", nodes);
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
- useEffect(() => {
-    NodeID = nodes.length;
-  }, []);
+//  useEffect(() => {
+//     NodeID = nodes.length;
+//   }, []);
 
   const onConnect = useCallback(
     (params) =>
@@ -57,10 +56,10 @@ const Canvas = ({ nodes, setNodes, onNodesChange, edges, setEdges, onEdgesChange
         y: event.clientY,
       });
       const newNode = {
-        id: `Node_${(NodeID = NodeID + 1)}`,
+        id: (nodes.length).toString(),
         type,
         position,
-        data: { label: `${type} node` },
+        data: { label: `${type} node`,code:"test" },
       };
       setNodes((nds) => nds.concat(newNode));
     },

@@ -1,9 +1,10 @@
 import React from 'react'
+import { useState } from 'react';
 import '@/components/custom/CustomNodes/CustomNodes.css'
 
 import { Handle, Position } from "reactflow";
 
-export const StartNode = (isConnectable) => {
+export const StartNode = ({data,isConnectable}) => {
     return (
       <div className="StartNode">
         Start
@@ -18,7 +19,7 @@ export const StartNode = (isConnectable) => {
   };
 
 
-  export const EndNode = (isConnectable) => {
+export const EndNode = ({isConnectable}) => {
     return (
       <div className="EndNode">
         <Handle
@@ -33,7 +34,13 @@ export const StartNode = (isConnectable) => {
   };
 
 
-export const InputNode = (isConnectable) => {
+export const InputNode = ({data,isConnectable}) => {
+  const [text, setText] = useState(data.code);
+
+  const handleChange = (event) => {
+    setText(event.target.value);
+    data.code = event.target.value; // Update the node label
+  };
     return (
       <div className="InputNode">
         <div className="InputNodeContent">
@@ -43,7 +50,7 @@ export const InputNode = (isConnectable) => {
             position={Position.Top}
             isConnectable={isConnectable}
           />
-          <input className="InputInput" type="text" placeholder="Input" />
+          <input className="InputInput" type="text" placeholder="Input" onChange={handleChange}/>
   
           <Handle
             type="source"
@@ -57,7 +64,13 @@ export const InputNode = (isConnectable) => {
   };
 
 
-export const OutputNode = (isConnectable) => {
+export const OutputNode = ({data,isConnectable}) => {
+  const [text, setText] = useState(data.code);
+
+  const handleChange = (event) => {
+    setText(event.target.value);
+    data.code = event.target.value; // Update the node label
+  };
     return (
       <div className="OutputNode">
         <div className="OutputNodeContent">
@@ -67,7 +80,7 @@ export const OutputNode = (isConnectable) => {
             position={Position.Top}
             isConnectable={isConnectable}
           />
-          <input className="OutputInput" type="text" placeholder="Output" />
+          <input className="OutputInput" type="text" placeholder="Output" onChange={handleChange}/>
   
           <Handle
             type="source"
@@ -81,7 +94,13 @@ export const OutputNode = (isConnectable) => {
   };
 
 
-export const ProcessNode = (isConnectable) => {
+export const ProcessNode = ({data,isConnectable}) => {
+  const [text, setText] = useState(data.code);
+
+  const handleChange = (event) => {
+    setText(event.target.value);
+    data.code = event.target.value; // Update the node label
+  };
     return (
       <div className="ProcessNode">
         <Handle
@@ -90,7 +109,7 @@ export const ProcessNode = (isConnectable) => {
           position={Position.Top}
           isConnectable={isConnectable}
         />
-        <input className="processInput" type="text" placeholder="Process" />
+        <input className="processInput" type="text" placeholder="Process" onChange={handleChange}/>
         <Handle
           type="source"
           position={Position.Bottom}
@@ -102,12 +121,18 @@ export const ProcessNode = (isConnectable) => {
   };
 
   
-export const DecisionNode = (isConnectable) => {
+export const DecisionNode = ({data,isConnectable}) => {
+  const [text, setText] = useState(data.code);
+
+  const handleChange = (event) => {
+    setText(event.target.value);
+    data.code = event.target.value; // Update the node label
+  };
     return (
       <div className="DecisionNodeContainer">
         <div className="DecisionNode">
           <div className="DecisionNodeContent">
-            <input className="DecisionInput" type="text" placeholder="Decision" />
+            <input className="DecisionInput" type="text" placeholder="Decision" onChange={handleChange}/>
           </div>
         </div>
         <div className="DecisionNodeHandels">
