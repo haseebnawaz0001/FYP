@@ -4,7 +4,7 @@ import '@/components/custom/CustomNodes/CustomNodes.css'
 
 import { Handle, Position } from "reactflow";
 
-export const StartNode = ({data,isConnectable}) => {
+export const StartNode = ({isConnectable}) => {
     return (
       <div className="StartNode">
         Start
@@ -35,11 +35,11 @@ export const EndNode = ({isConnectable}) => {
 
 
 export const InputNode = ({data,isConnectable}) => {
-  const [text, setText] = useState(data.code);
+  const [text, setText] = useState(data.PseudoCode);
 
   const handleChange = (event) => {
     setText(event.target.value);
-    data.code = event.target.value; // Update the node label
+    data.PseudoCode = event.target.value; // Update the node label
   };
     return (
       <div className="InputNode">
@@ -65,11 +65,11 @@ export const InputNode = ({data,isConnectable}) => {
 
 
 export const OutputNode = ({data,isConnectable}) => {
-  const [text, setText] = useState(data.code);
+  const [text, setText] = useState(data.PseudoCode);
 
   const handleChange = (event) => {
     setText(event.target.value);
-    data.code = event.target.value; // Update the node label
+    data.PseudoCode = event.target.value; // Update the node label
   };
     return (
       <div className="OutputNode">
@@ -95,11 +95,11 @@ export const OutputNode = ({data,isConnectable}) => {
 
 
 export const ProcessNode = ({data,isConnectable}) => {
-  const [text, setText] = useState(data.code);
+  const [text, setText] = useState(data.PseudoCode);
 
   const handleChange = (event) => {
     setText(event.target.value);
-    data.code = event.target.value; // Update the node label
+    data.PseudoCode = event.target.value; // Update the node label
   };
     return (
       <div className="ProcessNode">
@@ -122,11 +122,11 @@ export const ProcessNode = ({data,isConnectable}) => {
 
   
 export const DecisionNode = ({data,isConnectable}) => {
-  const [text, setText] = useState(data.code);
+  const [text, setText] = useState(data.PseudoCode);
 
   const handleChange = (event) => {
     setText(event.target.value);
-    data.code = event.target.value; // Update the node label
+    data.PseudoCode = event.target.value; // Update the node label
   };
     return (
       <div className="DecisionNodeContainer">

@@ -18,18 +18,23 @@ import { useNodesState, useEdgesState } from "reactflow";
 
 const App = () => {
 
-  const [value, setValue] = useState(JSON.stringify(TestNodes));
-  const [nodes, setNodes, onNodesChange] = useNodesState(TestNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(TestEdges);
+  const [value, setValue] = useState();
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   useEffect(()=>{
     setValue(JSON.stringify(nodes));
   },[nodes,edges])
 
+  // useEffect(()=>{
+  //   console.log("Nodes : ",nodes);
+  //   console.log("Edges : ",edges);
+  // },[nodes,edges])
+
 
   return (
     <>
-      <Menu />
+      <Menu nodes={nodes} edges={edges}/>
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"

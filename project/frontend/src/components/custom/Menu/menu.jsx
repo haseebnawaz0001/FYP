@@ -1,4 +1,3 @@
-"use client";
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -11,12 +10,25 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import {updateNodesSequentially} from '@/lib/updateNodesSequentially'
 
-const Menu = () => {
+
+const Menu = ({nodes,edges}) => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
+
+
+  function RunClicked() {
+    console.log('Run button clicked');
+    // Add your functionality for the Convert button here
+  }
+
+  function ConvertClicked() {
+    updateNodesSequentially(nodes,edges)
+  }
+
   return (
     <div className="flex justify-between w-full p-3 z-10 fixed top-0">
       <Menubar>
@@ -138,10 +150,10 @@ const Menu = () => {
       </Menubar>
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger>Run</MenubarTrigger>
+          <MenubarTrigger onClick={RunClicked}>Run</MenubarTrigger>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger>Convert</MenubarTrigger>
+          <MenubarTrigger onClick={ConvertClicked} >Convert</MenubarTrigger>
         </MenubarMenu>
       </Menubar>
     </div>
