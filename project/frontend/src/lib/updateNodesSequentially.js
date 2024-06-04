@@ -30,8 +30,13 @@ export function updateNodesSequentially(nodes, edges){
     } 
   }
 
-  console.log("Updated Nodes : ",updatedNodes)
-  console.log("ID is : ", id)
+  // console.log("Updated Nodes : ",updatedNodes)
+  // let PseudoCode = updatedNodes.map(node => node.data.PseudoCode);
+  // console.log(PseudoCode)
+
+return updatedNodes;
+
+  
 }
 
 

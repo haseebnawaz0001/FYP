@@ -13,7 +13,7 @@ import {
 import {updateNodesSequentially} from '@/lib/updateNodesSequentially'
 
 
-const Menu = ({nodes,edges}) => {
+const Menu = ({nodes,edges, setValue}) => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
@@ -26,7 +26,9 @@ const Menu = ({nodes,edges}) => {
   }
 
   function ConvertClicked() {
-    updateNodesSequentially(nodes,edges)
+    let UpdatedNode = updateNodesSequentially(nodes,edges)
+    let a = UpdatedNode.map(node => node.data.PseudoCode)
+    setValue(JSON.stringify(a))
   }
 
   return (

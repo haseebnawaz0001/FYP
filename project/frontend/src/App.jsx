@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <>
-      <Menu nodes={nodes} edges={edges}/>
+      <Menu nodes={nodes} edges={edges} setValue={setValue}/>
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"
