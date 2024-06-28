@@ -9,7 +9,6 @@ import {
 import Menu from '@/components/custom/Menu/menu'
 import Canvas from './components/custom/Canvas/Canvas'
 import MyEditor from './components/custom/Editor/Editor'
-import { TestNodes, TestEdges } from "@/assets/TestData/NodeTest";
 
 import { useState,useEffect } from 'react';
 
@@ -23,13 +22,11 @@ const App = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   useEffect(()=>{
-    setValue(JSON.stringify(nodes));
-  },[nodes,edges])
+    // setValue(JSON.stringify(nodes));
 
-  // useEffect(()=>{
-  //   console.log("Nodes : ",nodes);
-  //   console.log("Edges : ",edges);
-  // },[nodes,edges])
+      // console.log("Nodes : ",nodes)
+      // console.log("Edges : ",edges)
+  },[nodes,edges])
 
 
   return (

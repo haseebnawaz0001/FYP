@@ -145,13 +145,13 @@ export const DecisionNode = ({data,isConnectable}) => {
           <Handle
             type="source"
             position={Position.Right}
-            id="dnb1"
+            id="FALSE"
             isConnectable={isConnectable}
           />
           <Handle
             type="source"
             position={Position.Left}
-            id="dnb0"
+            id="TRUE"
             isConnectable={isConnectable}
           />
         </div>

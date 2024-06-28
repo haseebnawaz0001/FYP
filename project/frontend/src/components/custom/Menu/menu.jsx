@@ -10,26 +10,36 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import {updateNodesSequentially} from '@/lib/updateNodesSequentially'
 
-
-const Menu = ({nodes,edges, setValue}) => {
+const Menu = ({ nodes, edges, setValue }) => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
 
-
   function RunClicked() {
-    console.log('Run button clicked');
+    console.log("Run button clicked");
     // Add your functionality for the Convert button here
   }
 
-  function ConvertClicked() {
-    let UpdatedNode = updateNodesSequentially(nodes,edges)
-    let a = UpdatedNode.map(node => node.data.PseudoCode)
-    setValue(JSON.stringify(a))
-  }
+  async function ConvertClicked() {
+    try {
+        // Send POST request to the backend
+        const response = await fetch("http://localhost:3000/api/receive", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ NODES: nodes, EDGES: edges })
+        });
+
+        const data = await response.json();
+        setValue(data);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
 
   return (
     <div className="flex justify-between w-full p-3 z-10 fixed top-0">
@@ -155,7 +165,7 @@ const Menu = ({nodes,edges, setValue}) => {
           <MenubarTrigger onClick={RunClicked}>Run</MenubarTrigger>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger onClick={ConvertClicked} >Convert</MenubarTrigger>
+          <MenubarTrigger onClick={ConvertClicked}>Convert</MenubarTrigger>
         </MenubarMenu>
       </Menubar>
     </div>
