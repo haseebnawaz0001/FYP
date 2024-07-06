@@ -8,7 +8,14 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import "./Canvas.css";
 
-import { StartNode, EndNode, InputNode, OutputNode, ProcessNode, DecisionNode } from '@/components/custom/CustomNodes/CustomNodes';
+import {
+  StartNode,
+  EndNode,
+  InputNode,
+  OutputNode,
+  ProcessNode,
+  DecisionNode,
+} from "@/components/custom/CustomNodes/CustomNodes";
 
 const nodeTypes = {
   StartNode: StartNode,
@@ -19,34 +26,40 @@ const nodeTypes = {
   DecisionNode: DecisionNode,
 };
 
-const Canvas = ({ nodes, setNodes, onNodesChange, edges, setEdges, onEdgesChange }) => {
-
-  const [reactFlowInstance, setReactFlowInstance] = useState(null);
-
+const Canvas = ({
+  nodes,
+  setNodes,
+  onNodesChange,
+  edges,
+  setEdges,
+  onEdgesChange,
+  reactFlowInstance,
+  setReactFlowInstance,
+}) => {
+  // const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   function generateNextId() {
     if (!Array.isArray(nodes) || nodes.length === 0) {
       return "1";
     }
 
-    // Extract ids and convert them to numbers
-    const ids = nodes.map(item => parseInt(item.id, 10)).filter(Number.isFinite);
+    const ids = nodes
+      .map((item) => parseInt(item.id, 10))
+      .filter(Number.isFinite);
 
     if (ids.length === 0) {
       return "1";
     }
 
-    // Find the maximum id
     const maxId = Math.max(...ids);
 
-    // Return the next id as a string
     return (maxId + 1).toString();
   }
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge({ ...params, type: "smoothstep" }, eds)),
+    (params) =>
+      setEdges((eds) => addEdge({ ...params, type: "smoothstep" }, eds)),
     [setEdges]
-    
   );
 
   const onDragOver = useCallback((event) => {
@@ -72,7 +85,7 @@ const Canvas = ({ nodes, setNodes, onNodesChange, edges, setEdges, onEdgesChange
         id: generateNextId(),
         type,
         position,
-        data: { label: `${type} node`, PseudoCode: `${type}` },
+        data: { label: `${type} node`, PseudoCode: "" },
       };
 
       setNodes((nds) => {

@@ -5,3 +5,7 @@
 .cm-editor.cm-focused {
   outline: none;
 }
+
+.myEditor .cm-content {
+  font-weight: bold;
+}

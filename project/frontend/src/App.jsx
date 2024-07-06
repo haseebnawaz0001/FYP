@@ -1,37 +1,41 @@
-import './App.css'
+import "./App.css";
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/components/ui/resizable";
+} from "@/components/ui/resizable"; 
 
-import Menu from '@/components/custom/Menu/menu'
-import Canvas from './components/custom/Canvas/Canvas'
-import MyEditor from './components/custom/Editor/Editor'
+import Menu from "@/components/custom/Menu/menu";
+import Canvas from "./components/custom/Canvas/Canvas";
+import MyEditor from "./components/custom/Editor/Editor";
 
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 import { useNodesState, useEdgesState } from "reactflow";
 
-
 const App = () => {
-
   const [value, setValue] = useState();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
-  useEffect(()=>{
-    // setValue(JSON.stringify(nodes));
-
-      // console.log("Nodes : ",nodes)
-      // console.log("Edges : ",edges)
-  },[nodes,edges])
-
+  // useEffect(() => {
+  //   console.log("Nodes : ", nodes);
+  //   console.log("Edges : ", edges);
+  // }, [nodes, edges]);
 
   return (
     <>
-      <Menu nodes={nodes} edges={edges} setValue={setValue}/>
+      <Menu
+        nodes={nodes}
+        edges={edges}
+        value={value}
+        setValue={setValue}
+        setNodes={setNodes}
+        setEdges={setEdges}
+        reactFlowInstance={reactFlowInstance}
+      />
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full w-full rounded-lg border"
@@ -51,12 +55,14 @@ const App = () => {
               edges={edges}
               setEdges={setEdges}
               onEdgesChange={onEdgesChange}
+              reactFlowInstance={reactFlowInstance}
+              setReactFlowInstance={setReactFlowInstance}
             />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

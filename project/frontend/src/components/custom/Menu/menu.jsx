@@ -10,36 +10,132 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-const Menu = ({ nodes, edges, setValue }) => {
+// import DagreLayout from '@/lib/nodeLayout'
+
+import { saveAs } from "file-saver";
+
+const Menu = ({
+  nodes,
+  edges,
+  value,
+  setValue,
+  setNodes,
+  setEdges,
+  reactFlowInstance,
+}) => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
 
-  function RunClicked() {
-    console.log("Run button clicked");
-    // Add your functionality for the Convert button here
+  async function RunClicked() {
+    try {
+      // Send POST request to the backend
+      const response = await fetch("http://localhost:3000/api/run", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ CODE: value }),
+      });
+
+      const data = await response.json()
+      console.log(data)
+
+  } catch (error) {
+      console.error("Error:", error);
+  }
   }
 
-  async function ConvertClicked() {
+  function NewFlowchart() {
+    setValue("");
+    setEdges([]);
+    setNodes([]);
+  }
+
+  function ExportJson() {
+    const flowState = JSON.stringify(reactFlowInstance.toObject());
+    const blob = new Blob([flowState], { type: "application/json" });
+    saveAs(blob, "flow.json");
+  }
+
+  function ImportFlowchart(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        const importedState = JSON.parse(e.target.result);
+        if (importedState) {
+          const { x = 0, y = 0, zoom = 1 } = importedState.viewport;
+          setNodes(importedState.nodes || []);
+          setEdges(importedState.edges || []);
+          // setViewport({ x, y, zoom });
+        }
+      };
+      fileReader.readAsText(file);
+    } else {
+      console.log("No file selected");
+    }
+  }
+
+  async function ConvertToFlowchart() {
     try {
         // Send POST request to the backend
-        const response = await fetch("http://localhost:3000/api/receive", {
+        const response = await fetch("http://localhost:3000/api/ToFlowchart", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ NODES: nodes, EDGES: edges })
+            body: JSON.stringify({ CODE: value }),
         });
 
-        const data = await response.json();
-        setValue(data);
+        if (!response.ok) {
+            throw new Error("Network response was not ok " + response.statusText);
+        }
+
+        const data = await response.json()
+
+        const nd_edg = JSON.parse(data.replace(/```json|```/g, ''))
+
+        //this part of code is used for lay out
+        // const nd = nd_edg.nodes
+        // const edg = nd_edg.edges
+        // const { layoutedNodes, layoutedEdges } = DagreLayout({
+        //  nd,
+        //  edg
+        // });
+        // setNodes(layoutedNodes)
+        // setEdges(layoutedEdges)
+
+        setNodes(nd_edg.nodes)
+        setEdges(nd_edg.edges)
+
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
+
+  async function ConvertToCode() {
+    try {
+      // Send POST request to the backend
+      const response = await fetch("http://localhost:3000/api/ToCode", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ NODES: nodes, EDGES: edges }),
+      });
+
+      const data = await response.json();
+      setValue(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
   return (
     <div className="flex justify-between w-full p-3 z-10 fixed top-0">
@@ -47,56 +143,35 @@ const Menu = ({ nodes, edges, setValue }) => {
         <MenubarMenu>
           <MenubarTrigger>File</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>New Tab</MenubarItem>
-            <MenubarItem>New Window</MenubarItem>
-            <MenubarItem disabled>New Incognito Window</MenubarItem>
+            <MenubarItem onClick={NewFlowchart}>New Flowchart</MenubarItem>
             <MenubarSeparator />
             <MenubarSub>
-              <MenubarSubTrigger>Share</MenubarSubTrigger>
+              <MenubarSubTrigger>Export</MenubarSubTrigger>
               <MenubarSubContent>
-                <MenubarItem>Email link</MenubarItem>
-                <MenubarItem>Messages</MenubarItem>
-                <MenubarItem>Notes</MenubarItem>
+                <MenubarItem onClick={ExportJson}>Export JSON</MenubarItem>
+                <MenubarItem >Export PNG</MenubarItem>
               </MenubarSubContent>
             </MenubarSub>
             <MenubarSeparator />
-            <MenubarItem>Print...</MenubarItem>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label className="mx-2.5" htmlFor="flow.json">
+                Import Flowchart
+              </Label>
+              <Input
+                id="flow.json"
+                type="file"
+                accept=".json"
+                onChange={ImportFlowchart}
+              />
+            </div>
           </MenubarContent>
         </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>Edit</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>Undo</MenubarItem>
-            <MenubarItem>Redo </MenubarItem>
-            <MenubarSeparator />
-            <MenubarSub>
-              <MenubarSubTrigger>Find</MenubarSubTrigger>
-              <MenubarSubContent>
-                <MenubarItem>Search the web</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Find...</MenubarItem>
-                <MenubarItem>Find Next</MenubarItem>
-                <MenubarItem>Find Previous</MenubarItem>
-              </MenubarSubContent>
-            </MenubarSub>
-            <MenubarSeparator />
-            <MenubarItem>Cut</MenubarItem>
-            <MenubarItem>Copy</MenubarItem>
-            <MenubarItem>Paste</MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
+
         <MenubarMenu>
           <MenubarTrigger>View</MenubarTrigger>
           <MenubarContent>
-            <MenubarCheckboxItem>Always Show Bookmarks Bar</MenubarCheckboxItem>
-            <MenubarCheckboxItem checked>
-              Always Show Full URLs
-            </MenubarCheckboxItem>
-            <MenubarSeparator />
-            <MenubarItem inset>Reload</MenubarItem>
-            <MenubarItem disabled inset>
-              Force Reload{" "}
-            </MenubarItem>
+            <MenubarCheckboxItem checked>Light Theme</MenubarCheckboxItem>
+            <MenubarCheckboxItem>Dark Theme</MenubarCheckboxItem>
             <MenubarSeparator />
             <MenubarItem inset>Toggle Fullscreen</MenubarItem>
             <MenubarSeparator />
@@ -165,7 +240,12 @@ const Menu = ({ nodes, edges, setValue }) => {
           <MenubarTrigger onClick={RunClicked}>Run</MenubarTrigger>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger onClick={ConvertClicked}>Convert</MenubarTrigger>
+          <MenubarTrigger>Convert</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem onClick={ConvertToCode}>To Code</MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem onClick={ConvertToFlowchart}>To Flowchart</MenubarItem>
+          </MenubarContent>
         </MenubarMenu>
       </Menubar>
     </div>

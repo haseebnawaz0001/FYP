@@ -52,8 +52,9 @@
     width: 200px;
     height: 30px;
     background-color: var(--input-node);
-    font-size: 16px;
-    font-weight: normal;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
     outline: none;
   }
   .InputInput::placeholder {
@@ -96,8 +97,9 @@
     width: 200px;
     height: 30px;
     background-color: var(--output-node);
-    font-size: 16px;
-    font-weight: normal;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
     outline: none;
   }
   .OutputInput::placeholder {
@@ -127,8 +129,9 @@
     width: 220px;
     height: 30px;
     background-color: var(--process-node);
-    font-size: 16px;
-    font-weight: normal;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
     outline: none;
   }
   .processInput::placeholder {
@@ -177,8 +180,9 @@
     width: 180px;
     height: 30px;
     background-color: var(--decision-node);
-    font-size: 16px;
-    font-weight: normal;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
     outline: none;
   }
   .DecisionInput::placeholder {
